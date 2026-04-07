@@ -4,7 +4,7 @@ import MemberForm from './MemberForm';
 import { getCurrentWeekObj, getWeekObjFromId, getAdjacentWeekId } from '../utils/dateUtils';
 import './MemberDetail.css';
 
-const MemberDetail = ({ member, onBack, onUpdateMember }) => {
+const MemberDetail = ({ member, groups, onBack, onUpdateMember, onDeleteMember }) => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [selectedWeek, setSelectedWeek] = useState(() => getCurrentWeekObj());
   
@@ -94,7 +94,18 @@ const MemberDetail = ({ member, onBack, onUpdateMember }) => {
           <button className="icon-button" aria-label="Edit" onClick={() => setShowEditForm(true)}>
             <Edit2 size={20} />
           </button>
-          {/* A global delete member could go here, but let's keep UI simple */}
+          <button 
+            className="icon-button" 
+            aria-label="Delete Member" 
+            onClick={() => {
+              if (window.confirm('이 멤버와 관련된 모든 과거 기도 기록을 정말 삭제하시겠습니까?')) {
+                onDeleteMember(member.id);
+              }
+            }} 
+            style={{ color: '#fca5a5', marginLeft: '8px' }}
+          >
+            <Trash2 size={20} />
+          </button>
         </div>
       </header>
 
@@ -195,6 +206,7 @@ const MemberDetail = ({ member, onBack, onUpdateMember }) => {
 
       {showEditForm && (
         <MemberForm 
+          groups={groups}
           mode="edit" 
           initialData={member}
           onSave={handleMemberEditSave} 

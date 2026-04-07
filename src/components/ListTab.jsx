@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, ChevronRight, User } from 'lucide-react';
+import { UserPlus, ChevronRight, User, FileText } from 'lucide-react';
 import MemberDetail from './MemberDetail';
 import MemberForm from './MemberForm';
+import BulkAddForm from './BulkAddForm';
+import GroupManager from './GroupManager';
 import { getCurrentWeekObj } from '../utils/dateUtils';
 import './ListTab.css';
 
@@ -44,16 +46,27 @@ const DUMMY_DATA = [
   }
 ];
 
-const GROUPS = ["전체", "교회 목장", "회사", "지인"];
+const DEFAULT_GROUPS = ["교회 목장", "회사", "지인", "미분류"];
 
 const ListTab = () => {
   const [members, setMembers] = useState([]);
+  const [groups, setGroups] = useState([]);
   const [activeGroup, setActiveGroup] = useState("전체");
   const [selectedMember, setSelectedMember] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showBulkAddForm, setShowBulkAddForm] = useState(false);
+  const [showGroupManager, setShowGroupManager] = useState(false);
 
   // Load data from localStorage on mount
   useEffect(() => {
+    const savedGroups = localStorage.getItem('behalf_groups');
+    if (savedGroups) {
+      setGroups(JSON.parse(savedGroups));
+    } else {
+      localStorage.setItem('behalf_groups', JSON.stringify(DEFAULT_GROUPS));
+      setGroups(DEFAULT_GROUPS);
+    }
+
     const savedData = localStorage.getItem('behalf_members_v2');
     if (savedData) {
       setMembers(JSON.parse(savedData));
@@ -77,10 +90,68 @@ const ListTab = () => {
     setShowAddForm(false);
   };
 
+  const handleBulkAdd = (parsedData, group) => {
+    const currentWeek = getCurrentWeekObj();
+    const newMembers = parsedData.map((item, idx) => ({
+      id: Date.now().toString() + idx.toString(),
+      name: item.name,
+      group: group,
+      weeklyRequests: [
+        {
+          week: currentWeek.id,
+          label: currentWeek.label,
+          topics: item.topics || []
+        }
+      ]
+    }));
+    saveToStorage([...members, ...newMembers]);
+    setShowBulkAddForm(false);
+  };
+
   const handleUpdateMember = (updatedMember) => {
     const newMembers = members.map(m => m.id === updatedMember.id ? updatedMember : m);
     saveToStorage(newMembers);
     setSelectedMember(updatedMember);
+  };
+
+  const handleDeleteMember = (memberId) => {
+    const newMembers = members.filter(m => m.id !== memberId);
+    saveToStorage(newMembers);
+
+    const savedHistory = localStorage.getItem('behalf_history');
+    if (savedHistory) {
+       const parsedHistory = JSON.parse(savedHistory);
+       const updatedHistory = parsedHistory.filter(h => h.memberId !== memberId);
+       localStorage.setItem('behalf_history', JSON.stringify(updatedHistory));
+    }
+
+    const todayCache = localStorage.getItem('behalf_today_prayer');
+    if (todayCache) {
+       const parsedToday = JSON.parse(todayCache);
+       if (parsedToday.memberId === memberId) {
+          localStorage.removeItem('behalf_today_prayer');
+       }
+    }
+
+    setSelectedMember(null);
+  };
+
+  const handleUpdateGroups = (newGroups, deletedGroup = null) => {
+    setGroups(newGroups);
+    localStorage.setItem('behalf_groups', JSON.stringify(newGroups));
+    
+    if (deletedGroup) {
+       const updatedMembers = members.map(m => {
+           if (m.group === deletedGroup) {
+               return { ...m, group: "미분류" };
+           }
+           return m;
+       });
+       saveToStorage(updatedMembers);
+       if (activeGroup === deletedGroup) {
+           setActiveGroup("전체");
+       }
+    }
   };
 
   const filteredMembers = activeGroup === "전체" 
@@ -97,9 +168,11 @@ const ListTab = () => {
   if (selectedMember) {
     return (
       <MemberDetail 
-        member={selectedMember} 
+        member={selectedMember}
+        groups={groups}
         onBack={() => setSelectedMember(null)} 
         onUpdateMember={handleUpdateMember}
+        onDeleteMember={handleDeleteMember}
       />
     );
   }
@@ -113,7 +186,13 @@ const ListTab = () => {
       {/* Group Filter Scrollable Tab */}
       <div className="group-filter-container">
         <div className="group-filter-scroll">
-          {GROUPS.map(group => (
+          <button
+            className={`filter-chip ${activeGroup === "전체" ? 'active' : ''}`}
+            onClick={() => setActiveGroup("전체")}
+          >
+            전체
+          </button>
+          {groups.map(group => (
             <button
               key={group}
               className={`filter-chip ${activeGroup === group ? 'active' : ''}`}
@@ -122,6 +201,12 @@ const ListTab = () => {
               {group}
             </button>
           ))}
+          <button
+            className="filter-chip outline"
+            onClick={() => setShowGroupManager(true)}
+          >
+            + 그룹 편집
+          </button>
         </div>
       </div>
 
@@ -153,21 +238,47 @@ const ListTab = () => {
         )}
       </div>
 
-      {/* Add Button */}
-      <button 
-        className="fab-button" 
-        aria-label="멤버 추가"
-        onClick={() => setShowAddForm(true)}
-      >
-        <UserPlus size={24} />
-      </button>
+      {/* Add Buttons */}
+      <div className="fab-container">
+        <button 
+          className="fab-button secondary" 
+          aria-label="기도제목 일괄 파싱 추가"
+          onClick={() => setShowBulkAddForm(true)}
+        >
+          <FileText size={20} />
+        </button>
+        <button 
+          className="fab-button" 
+          aria-label="멤버 개별 추가"
+          onClick={() => setShowAddForm(true)}
+        >
+          <UserPlus size={24} />
+        </button>
+      </div>
 
       {showAddForm && (
         <MemberForm 
+          groups={groups}
           mode="add" 
           onSave={handleAddMember} 
           onCancel={() => setShowAddForm(false)} 
         />
+      )}
+
+      {showBulkAddForm && (
+        <BulkAddForm 
+          groups={groups}
+          onSave={handleBulkAdd}
+          onCancel={() => setShowBulkAddForm(false)}
+        />
+      )}
+
+      {showGroupManager && (
+         <GroupManager 
+           groups={groups}
+           onClose={() => setShowGroupManager(false)}
+           onUpdateGroups={handleUpdateGroups}
+         />
       )}
     </div>
   );

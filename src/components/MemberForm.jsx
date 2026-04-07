@@ -3,11 +3,9 @@ import { X } from 'lucide-react';
 import { getCurrentWeekObj } from '../utils/dateUtils';
 import './MemberForm.css';
 
-const GROUPS = ["교회 목장", "회사", "지인"];
-
-const MemberForm = ({ mode, initialData = null, onSave, onCancel }) => {
+const MemberForm = ({ groups = ["교회 목장", "회사", "지인"], mode, initialData = null, onSave, onCancel }) => {
   const [name, setName] = useState(initialData?.name || '');
-  const [group, setGroup] = useState(initialData?.group || GROUPS[0]);
+  const [group, setGroup] = useState(initialData?.group || groups[0]);
   const [requests, setRequests] = useState(['', '', '']); // Up to 3 requests for add mode
 
   const handleRequestChange = (index, value) => {
@@ -80,7 +78,7 @@ const MemberForm = ({ mode, initialData = null, onSave, onCancel }) => {
                 value={group}
                 onChange={e => setGroup(e.target.value)}
               >
-                {GROUPS.map(g => (
+                {groups.map(g => (
                   <option key={g} value={g}>{g}</option>
                 ))}
               </select>

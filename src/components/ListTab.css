@@ -111,11 +111,19 @@
   opacity: 0.5;
 }
 
-/* Floating Action Button */
-.fab-button {
+/* Floating Action Button Container */
+.fab-container {
   position: absolute;
   bottom: 24px;
   right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  z-index: 5;
+}
+
+.fab-button {
   width: 56px;
   height: 56px;
   border-radius: 28px;
@@ -128,10 +136,19 @@
   box-shadow: 0 8px 24px var(--primary-glow);
   cursor: pointer;
   transition: all 0.3s ease;
-  z-index: 5;
+}
+
+.fab-button.secondary {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  background: var(--surface-color);
+  color: #a5b4fc;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
 }
 
 .fab-button:active {
   transform: scale(0.92);
-  box-shadow: 0 4px 12px var(--primary-glow);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
