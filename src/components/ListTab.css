@@ -51,7 +51,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-bottom: 80px; /* space for FAB */
+  padding-bottom: 160px; /* space for FAB and tab bar */
 }
 
 .member-card {
