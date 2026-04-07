@@ -64,42 +64,20 @@ const TodayTab = () => {
 
       // Generate API prayer
       try {
-        const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
-        if (!apiKey) {
-           throw new Error("Missing API Key");
-        }
-
-        const prompt = `대상자 이름: ${targetMember.name}
-기도제목: ${memberTopics.join(", ")}
-
-위 대상자와 기도제목을 바탕으로 위로와 격려가 되는 성경 구절 1개와 짧은 기도문을 작성해주세요.
-반드시 아래 JSON 형식으로만 응답해야 합니다. 다른 말은 절대 추가하지 마세요.
-{
-  "verse": {
-    "text": "성경 구절 내용",
-    "reference": "책 장:절"
-  },
-  "prayerText": "기도문 내용"
-}`;
-
-        const res = await fetch('/api/anthropic/v1/messages', {
+        const res = await fetch('/api/claude', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01',
-            'anthropic-dangerous-direct-browser-access': 'true'
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            model: 'claude-sonnet-4-6',
-            max_tokens: 1000,
-            messages: [{ role: 'user', content: prompt }]
+            targetName: targetMember.name,
+            topics: memberTopics
           })
         });
 
         if (!res.ok) {
            const errorText = await res.text();
-           throw new Error(`API Exception: ${res.status} ${res.statusText} - ${errorText}`);
+           throw new Error(`서버/API 오류: ${res.status} - ${errorText}`);
         }
 
         const data = await res.json();
