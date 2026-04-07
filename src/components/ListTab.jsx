@@ -239,21 +239,23 @@ const ListTab = () => {
       </div>
 
       {/* Add Buttons */}
-      <div className="fab-container">
-        <button 
-          className="fab-button secondary" 
-          aria-label="기도제목 일괄 파싱 추가"
-          onClick={() => setShowBulkAddForm(true)}
-        >
-          <FileText size={20} />
-        </button>
-        <button 
-          className="fab-button" 
-          aria-label="멤버 개별 추가"
-          onClick={() => setShowAddForm(true)}
-        >
-          <UserPlus size={24} />
-        </button>
+      <div className="fab-wrapper">
+        <div className="fab-container">
+          <button 
+            className="fab-button secondary" 
+            aria-label="기도제목 일괄 파싱 추가"
+            onClick={() => setShowBulkAddForm(true)}
+          >
+            <FileText size={20} />
+          </button>
+          <button 
+            className="fab-button" 
+            aria-label="멤버 개별 추가"
+            onClick={() => setShowAddForm(true)}
+          >
+            <UserPlus size={24} />
+          </button>
+        </div>
       </div>
 
       {showAddForm && (
