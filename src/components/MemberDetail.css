@@ -1,0 +1,346 @@
+.member-detail-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--bg-color);
+  /* The container takes full width/height to overlay list */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.back-button, .icon-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.back-button:active, .icon-button:active {
+  transform: scale(0.92);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-button.delete {
+  color: #ef4444;
+}
+
+.icon-button.delete:active {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.detail-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, #818cf8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px var(--primary-glow);
+}
+
+.avatar-icon {
+  color: #fff;
+}
+
+.profile-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.profile-group {
+  font-size: 14px;
+  color: var(--text-muted);
+  background: var(--surface-color);
+  padding: 4px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--border-color);
+}
+
+/* Week Navigator */
+.week-navigator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.week-label {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text-main);
+}
+
+.week-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.week-btn:active {
+  color: var(--text-main);
+}
+
+/* Requests Section */
+.requests-section {
+  flex: 1;
+  background: var(--surface-color);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  margin-bottom: 24px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--text-main);
+}
+
+.text-pink {
+  color: #ec4899;
+  filter: drop-shadow(0 0 8px rgba(236, 72, 153, 0.4));
+}
+
+.detail-request-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-request-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.request-number {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Topic Display & Actions */
+.topic-display {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.request-text {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #e2e8f0;
+  word-break: keep-all;
+  flex: 1;
+}
+
+.topic-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0.6;
+}
+
+.topic-btn {
+  background: rgba(255,255,255,0.05);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.topic-btn:active {
+  background: rgba(255,255,255,0.1);
+  transform: scale(0.9);
+}
+
+.topic-btn.delete {
+  color: #f87171;
+}
+
+/* Inline Editing */
+.inline-edit, .inline-add {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.inline-add {
+  margin-top: 12px;
+}
+
+.inline-input {
+  flex: 1;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid var(--primary-glow);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+}
+
+.inline-action {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.inline-action:active {
+  transform: scale(0.9);
+}
+
+.inline-action.save {
+  background: var(--primary);
+  color: white;
+}
+
+.inline-action.cancel {
+  background: rgba(255,255,255,0.1);
+  color: var(--text-main);
+}
+
+.inline-action.save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Add Topic Button */
+.add-topic-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed rgba(255,255,255,0.2);
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-topic-btn:active {
+  background: rgba(255,255,255,0.06);
+}
+
+.empty-requests {
+  text-align: center;
+  padding: 24px 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.detail-actions {
+  margin-top: auto;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+.pray-now-button {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+  transition: all 0.3s ease;
+}
+
+.pray-now-button:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}

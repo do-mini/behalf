@@ -1,0 +1,130 @@
+.settings-tab-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.settings-group {
+  background: var(--surface-color);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.settings-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  position: relative;
+}
+
+.settings-item-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.settings-icon-wrapper {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-blue { color: #60a5fa; }
+.text-green { color: #34d399; }
+.text-red { color: #f87171; }
+
+.settings-item-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.settings-item-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.settings-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.minimal-select {
+  appearance: none;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: right;
+  padding-right: 24px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  direction: rtl; /* to align text to right neatly */
+}
+
+.minimal-select option {
+  direction: ltr; /* keep options ltr */
+  background: var(--surface-color);
+  color: var(--text-main);
+}
+
+.chevron {
+  position: absolute;
+  right: 0;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Danger Action */
+.danger-group {
+  margin-top: 16px;
+  border-color: rgba(248, 113, 113, 0.2);
+}
+
+.danger-group .settings-item {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.danger-group .settings-item:active {
+  background: rgba(248, 113, 113, 0.05);
+}
+
+.danger-group .settings-icon-wrapper {
+  background: rgba(248, 113, 113, 0.1);
+}
+
+.app-version {
+  margin-top: auto;
+  text-align: center;
+  padding: 32px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 600;
+  opacity: 0.5;
+}
