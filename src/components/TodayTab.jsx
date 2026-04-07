@@ -173,7 +173,6 @@ const TodayTab = () => {
       <div className="today-tab-container error-state">
         <p>오늘의 기도 대상을 불러오지 못했거나 API 연결에 문제가 있습니다.</p>
         <p style={{ color: '#fca5a5', marginTop: '12px', fontSize: '13px' }}>상세 오류: {errorMessage}</p>
-        <p style={{ marginTop: '16px' }}>Vite 프록시/환경변수를 적용하기 위해 터미널에서 npm run dev 서버를 껐다가 다시 켜주세요!</p>
       </div>
     );
   }
