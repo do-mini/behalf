@@ -59,49 +59,51 @@ const MemberForm = ({ mode, initialData = null, onSave, onCancel }) => {
         </header>
 
         <form onSubmit={handleSubmit} className="member-form">
-          <div className="form-group">
-            <label className="form-label">이름</label>
-            <input 
-              type="text" 
-              className="form-input" 
-              placeholder="멤버 이름 입력" 
-              value={name}
-              onChange={e => setName(e.target.value)}
-              required
-              autoFocus
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">그룹 선택</label>
-            <select 
-              className="form-select" 
-              value={group}
-              onChange={e => setGroup(e.target.value)}
-            >
-              {GROUPS.map(g => (
-                <option key={g} value={g}>{g}</option>
-              ))}
-            </select>
-          </div>
-
-          {mode === 'add' && (
+          <div className="form-body">
             <div className="form-group">
-              <label className="form-label">초기 기도제목 (최대 3개)</label>
-              <div className="request-inputs">
-                {requests.map((req, idx) => (
-                  <input 
-                    key={idx}
-                    type="text" 
-                    className="form-input" 
-                    placeholder={`기도제목 ${idx + 1}`} 
-                    value={req}
-                    onChange={e => handleRequestChange(idx, e.target.value)}
-                  />
-                ))}
-              </div>
+              <label className="form-label">이름</label>
+              <input 
+                type="text" 
+                className="form-input" 
+                placeholder="멤버 이름 입력" 
+                value={name}
+                onChange={e => setName(e.target.value)}
+                required
+                autoFocus
+              />
             </div>
-          )}
+
+            <div className="form-group">
+              <label className="form-label">그룹 선택</label>
+              <select 
+                className="form-select" 
+                value={group}
+                onChange={e => setGroup(e.target.value)}
+              >
+                {GROUPS.map(g => (
+                  <option key={g} value={g}>{g}</option>
+                ))}
+              </select>
+            </div>
+
+            {mode === 'add' && (
+              <div className="form-group">
+                <label className="form-label">초기 기도제목 (최대 3개)</label>
+                <div className="request-inputs">
+                  {requests.map((req, idx) => (
+                    <input 
+                      key={idx}
+                      type="text" 
+                      className="form-input" 
+                      placeholder={`기도제목 ${idx + 1}`} 
+                      value={req}
+                      onChange={e => handleRequestChange(idx, e.target.value)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="form-actions">
             <button type="button" className="btn-cancel" onClick={onCancel}>취소</button>
