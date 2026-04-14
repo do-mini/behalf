@@ -1,7 +1,14 @@
+export const getMaxWeeksInMonth = (year, month) => {
+   const daysInMonth = new Date(year, month, 0).getDate();
+   const firstDay = new Date(year, month - 1, 1).getDay();
+   return Math.floor((daysInMonth - 1 + firstDay) / 7) + 1;
+};
+
 export const getCurrentWeekObj = (date = new Date()) => {
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
-  const week = Math.ceil(date.getDate() / 7);
+  const firstDay = new Date(year, month - 1, 1).getDay();
+  const week = Math.floor((date.getDate() - 1 + firstDay) / 7) + 1;
   
   const id = `${year}-${String(month).padStart(2, '0')}-W${week}`;
   const label = `${year}년 ${month}월 ${week}째주`;
@@ -33,11 +40,12 @@ export const getAdjacentWeekId = (weekId, direction) => {
                month = 12;
                year -= 1;
            }
-           week = 5; 
+           week = getMaxWeeksInMonth(year, month); 
        }
    } else {
        week += 1;
-       if (week > 5) {
+       const maxWeeks = getMaxWeeksInMonth(year, month);
+       if (week > maxWeeks) {
            week = 1;
            month += 1;
            if (month > 12) {
