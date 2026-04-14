@@ -5,6 +5,7 @@ import MemberForm from './MemberForm';
 import BulkAddForm from './BulkAddForm';
 import GroupManager from './GroupManager';
 import { getCurrentWeekObj } from '../utils/dateUtils';
+import { getGroupColor, getGroupInitial } from '../utils/groupUtils';
 import './ListTab.css';
 
 const DUMMY_DATA = [
@@ -305,8 +306,11 @@ const ListTab = () => {
               className="member-card"
               onClick={() => setSelectedMember(member)}
             >
-              <div className="member-card-avatar">
-                <User size={20} className="text-white" />
+              <div 
+                className="member-card-avatar"
+                style={{ background: getGroupColor(member.group, groups) }}
+              >
+                <span className="avatar-initial">{getGroupInitial(member.group)}</span>
               </div>
               <div className="member-card-info">
                 <h3 className="member-name">{member.name}</h3>

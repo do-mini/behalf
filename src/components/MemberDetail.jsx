@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, User, Heart, Edit2, Trash2, ChevronLeft, ChevronRight, Plus, Check, X } from 'lucide-react';
 import MemberForm from './MemberForm';
 import { getCurrentWeekObj, getWeekObjFromId, getAdjacentWeekId } from '../utils/dateUtils';
+import { getGroupColor, getGroupInitial } from '../utils/groupUtils';
 import './MemberDetail.css';
 
 const MemberDetail = ({ member, groups, onBack, onUpdateMember, onDeleteMember }) => {
@@ -111,8 +112,11 @@ const MemberDetail = ({ member, groups, onBack, onUpdateMember, onDeleteMember }
 
       {/* Profile Info */}
       <section className="profile-section">
-        <div className="profile-avatar">
-          <User size={40} className="avatar-icon" />
+        <div 
+          className="profile-avatar"
+          style={{ background: getGroupColor(member.group, groups) }}
+        >
+          <span className="profile-initial">{getGroupInitial(member.group)}</span>
         </div>
         <h2 className="profile-name">{member.name}</h2>
         <span className="profile-group">{member.group}</span>

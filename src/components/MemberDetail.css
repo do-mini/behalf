@@ -75,16 +75,17 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, #818cf8 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-  box-shadow: 0 8px 24px var(--primary-glow);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
-.avatar-icon {
+.profile-initial {
   color: #fff;
+  font-size: 32px;
+  font-weight: 700;
 }
 
 .profile-name {
