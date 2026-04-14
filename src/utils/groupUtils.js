@@ -1,11 +1,11 @@
 const BASE_COLORS = {
   "교회 목장": "#6366f1",
-  "회사": "#3b82f6",
+  "회사": "#f59e0b",
   "지인": "#10b981",
   "미분류": "#6b7280"
 };
 
-const EXTRA_COLORS = ["#f59e0b", "#ef4444", "#ec4899"];
+const EXTRA_COLORS = ["#ef4444", "#ec4899", "#3b82f6", "#14b8a6"];
 
 export const getGroupColor = (groupName, allGroups = []) => {
   if (BASE_COLORS[groupName]) {
