@@ -68,6 +68,7 @@
   display: flex;
   gap: 12px;
   margin-bottom: 24px;
+  height: 48px;
 }
 
 .group-input {
@@ -75,11 +76,12 @@
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
-  padding: 14px 16px;
+  padding: 0 16px;
   border-radius: 12px;
   font-size: 15px;
   font-family: inherit;
   transition: all 0.2s ease;
+  height: 100%;
 }
 
 .group-input:focus {
@@ -93,7 +95,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 0 16px;
+  width: 80px;
   background: var(--primary);
   color: white;
   border: none;
@@ -102,6 +104,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  height: 100%;
 }
 
 .group-add-btn:disabled {
@@ -112,7 +115,6 @@
 .group-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -122,15 +124,26 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  padding: 0 8px;
+  height: 56px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.group-list-item:last-child {
+  border-bottom: none;
 }
 
 .group-name {
   font-size: 15px;
   font-weight: 500;
+  flex: 1;
+  text-align: left;
+}
+
+.group-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .default-group {
@@ -143,6 +156,7 @@
   background: rgba(255, 255, 255, 0.1);
   padding: 4px 8px;
   border-radius: 100px;
+  white-space: nowrap;
 }
 
 .group-delete-btn {

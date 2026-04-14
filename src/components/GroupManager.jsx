@@ -64,16 +64,18 @@ const GroupManager = ({ groups, onClose, onUpdateGroups }) => {
               return (
                 <li key={g} className="group-list-item">
                   <span className={`group-name ${isDefault ? 'default-group' : ''}`}>{g}</span>
-                  <button 
-                    className="group-delete-btn" 
-                    onClick={() => handleDelete(g)}
-                    aria-label="Delete Group"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                  {isDefault && (
-                    <span className="group-badge">기본</span>
-                  )}
+                  <div className="group-item-actions">
+                    {isDefault && (
+                      <span className="group-badge">기본</span>
+                    )}
+                    <button 
+                      className="group-delete-btn" 
+                      onClick={() => handleDelete(g)}
+                      aria-label="Delete Group"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </li>
               );
             })}
