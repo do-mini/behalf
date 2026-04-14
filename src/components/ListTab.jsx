@@ -56,6 +56,7 @@ const ListTab = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [showBulkAddForm, setShowBulkAddForm] = useState(false);
   const [showGroupManager, setShowGroupManager] = useState(false);
+  const [sortMode, setSortMode] = useState('name');
 
   // Load data from localStorage on mount
   useEffect(() => {
@@ -74,7 +75,17 @@ const ListTab = () => {
       localStorage.setItem('behalf_members_v2', JSON.stringify(DUMMY_DATA));
       setMembers(DUMMY_DATA);
     }
+
+    const savedSortMode = localStorage.getItem('behalf_sort_mode');
+    if (savedSortMode) {
+      setSortMode(savedSortMode);
+    }
   }, []);
+
+  const handleSortChange = (mode) => {
+    setSortMode(mode);
+    localStorage.setItem('behalf_sort_mode', mode);
+  };
 
   const saveToStorage = (newMembers) => {
     setMembers(newMembers);
@@ -189,9 +200,28 @@ const ListTab = () => {
     }
   };
 
-  const filteredMembers = activeGroup === "전체" 
-    ? members 
+  let filteredMembers = activeGroup === "전체" 
+    ? [...members] 
     : members.filter(m => m.group === activeGroup);
+
+  if (sortMode === 'name') {
+    filteredMembers.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortMode === 'recent') {
+    filteredMembers.sort((a, b) => {
+      const getLatestWeek = (mem) => {
+        if (!mem.weeklyRequests || mem.weeklyRequests.length === 0) return '';
+        return [...mem.weeklyRequests].sort((x, y) => y.week.localeCompare(x.week))[0].week;
+      };
+      
+      const latestA = getLatestWeek(a);
+      const latestB = getLatestWeek(b);
+      
+      if (latestB === latestA) {
+        return a.name.localeCompare(b.name);
+      }
+      return latestB.localeCompare(latestA);
+    });
+  }
 
   const getPreviewText = (member) => {
     if (!member.weeklyRequests || member.weeklyRequests.length === 0) return "등록된 기도제목이 없습니다";
@@ -247,6 +277,23 @@ const ListTab = () => {
             + 그룹 편집
           </button>
         </div>
+      </div>
+
+      {/* Sort Options */}
+      <div className="sort-options-container">
+        <button 
+          className={`sort-option ${sortMode === 'name' ? 'active' : ''}`}
+          onClick={() => handleSortChange('name')}
+        >
+          가나다순
+        </button>
+        <span className="sort-divider">|</span>
+        <button 
+          className={`sort-option ${sortMode === 'recent' ? 'active' : ''}`}
+          onClick={() => handleSortChange('recent')}
+        >
+          최근 업데이트순
+        </button>
       </div>
 
       {/* Member List */}
