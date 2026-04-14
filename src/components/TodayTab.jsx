@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Quote, BookOpen, CheckCircle2 } from 'lucide-react';
 import { getTargetMember, getMemberTopicsForCurrentWeek } from '../utils/todayUtils';
-import { calculateStreak } from '../utils/dateUtils';
+import { calculateStreak, getLocalFormattedDate } from '../utils/dateUtils';
 import './TodayTab.css';
 
 const extractJson = (text) => {
@@ -26,7 +26,7 @@ const TodayTab = () => {
   useEffect(() => {
     const initializeToday = async () => {
       const today = new Date();
-      const dateStr = today.toISOString().split('T')[0];
+      const dateStr = getLocalFormattedDate(today);
       setTodayDateStr(dateStr);
 
       // Load members
@@ -138,7 +138,7 @@ const TodayTab = () => {
 
     // Update History Tab specific log
     const historyData = JSON.parse(localStorage.getItem('behalf_history') || '[]');
-    const dateQuery = new Date().toISOString().split('T')[0];
+    const dateQuery = getLocalFormattedDate(new Date());
     const isAlreadyLogged = historyData.some(h => h.date === dateQuery);
     if (!isAlreadyLogged) {
       historyData.push({

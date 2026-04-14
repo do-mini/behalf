@@ -1,4 +1,4 @@
-import { getCurrentWeekObj } from './dateUtils';
+import { getCurrentWeekObj, getLocalFormattedDate } from './dateUtils';
 
 const GROUPS = ["교회 목장", "회사", "지인"];
 
@@ -27,7 +27,7 @@ export const getTargetMember = (members, date = new Date()) => {
 
   if (settings.rotationMode === 'random') {
     // 안정성을 위해 오늘 날짜 문자열로 간단한 해시를 만들어 고정된 인덱스 도출
-    const dayStr = date.toISOString().split('T')[0];
+    const dayStr = getLocalFormattedDate(date);
     let hash = 0;
     for (let i = 0; i < dayStr.length; i++) {
         hash += dayStr.charCodeAt(i);

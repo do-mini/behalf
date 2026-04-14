@@ -1,3 +1,10 @@
+export const getLocalFormattedDate = (date = new Date()) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 export const getMaxWeeksInMonth = (year, month) => {
    const daysInMonth = new Date(year, month, 0).getDate();
    const firstDay = new Date(year, month - 1, 1).getDay();
@@ -63,10 +70,10 @@ export const calculateStreak = (historyData) => {
   const uniqueDates = [...new Set(historyData.map(h => h.date))].sort().reverse();
   if (uniqueDates.length === 0) return 0;
 
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getLocalFormattedDate(new Date());
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayStr = yesterday.toISOString().split('T')[0];
+  const yesterdayStr = getLocalFormattedDate(yesterday);
 
   if (!uniqueDates.includes(todayStr) && !uniqueDates.includes(yesterdayStr)) {
     return 0;
@@ -80,7 +87,7 @@ export const calculateStreak = (historyData) => {
   }
 
   while (true) {
-    const dStr = checkDate.toISOString().split('T')[0];
+    const dStr = getLocalFormattedDate(checkDate);
     if (uniqueDates.includes(dStr)) {
       streak++;
       checkDate.setDate(checkDate.getDate() - 1);
