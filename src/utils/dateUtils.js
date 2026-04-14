@@ -48,3 +48,70 @@ export const getAdjacentWeekId = (weekId, direction) => {
    }
    return `${year}-${String(month).padStart(2, '0')}-W${week}`;
 };
+
+export const calculateStreak = (historyData) => {
+  if (!historyData || historyData.length === 0) return 0;
+  
+  const uniqueDates = [...new Set(historyData.map(h => h.date))].sort().reverse();
+  if (uniqueDates.length === 0) return 0;
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+  if (!uniqueDates.includes(todayStr) && !uniqueDates.includes(yesterdayStr)) {
+    return 0;
+  }
+
+  let streak = 0;
+  let checkDate = new Date();
+  
+  if (!uniqueDates.includes(todayStr)) {
+     checkDate.setDate(checkDate.getDate() - 1);
+  }
+
+  while (true) {
+    const dStr = checkDate.toISOString().split('T')[0];
+    if (uniqueDates.includes(dStr)) {
+      streak++;
+      checkDate.setDate(checkDate.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+
+  return streak;
+};
+
+export const getMaxStreak = (historyData) => {
+  if (!historyData || historyData.length === 0) return 0;
+  
+  const uniqueDates = [...new Set(historyData.map(h => h.date))].sort();
+  if (uniqueDates.length === 0) return 0;
+
+  let maxStreak = 1;
+  let currentStreak = 1;
+
+  for (let i = 1; i < uniqueDates.length; i++) {
+    const prevDate = new Date(uniqueDates[i-1]);
+    const currDate = new Date(uniqueDates[i]);
+    
+    // Handle timezone differences carefully when comparing adjacent days using Date objects
+    // Better way is to use UTC to calculate precise diff in days
+    const utcPrev = Date.UTC(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate());
+    const utcCurr = Date.UTC(currDate.getFullYear(), currDate.getMonth(), currDate.getDate());
+    const diffDays = Math.floor((utcCurr - utcPrev) / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) {
+      currentStreak++;
+      if (currentStreak > maxStreak) {
+        maxStreak = currentStreak;
+      }
+    } else if (diffDays > 1) {
+      currentStreak = 1;
+    }
+  }
+
+  return maxStreak;
+};

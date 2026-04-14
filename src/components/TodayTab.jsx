@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Quote, BookOpen, CheckCircle2 } from 'lucide-react';
 import { getTargetMember, getMemberTopicsForCurrentWeek } from '../utils/todayUtils';
+import { calculateStreak } from '../utils/dateUtils';
 import './TodayTab.css';
 
 const extractJson = (text) => {
@@ -20,6 +21,7 @@ const TodayTab = () => {
   const [status, setStatus] = useState('loading'); // loading, ready, completed, error
   const [errorMessage, setErrorMessage] = useState('');
   const [todayDateStr, setTodayDateStr] = useState('');
+  const [streak, setStreak] = useState(0);
 
   useEffect(() => {
     const initializeToday = async () => {
@@ -34,6 +36,10 @@ const TodayTab = () => {
         setStatus('error');
         return;
       }
+
+      const historyData = JSON.parse(localStorage.getItem('behalf_history') || '[]');
+      const currentStreak = calculateStreak(historyData);
+      setStreak(currentStreak);
 
       const parsedMembers = JSON.parse(savedMembers);
       const targetMember = getTargetMember(parsedMembers, today);
@@ -141,6 +147,7 @@ const TodayTab = () => {
         memberName: member.name
       });
       localStorage.setItem('behalf_history', JSON.stringify(historyData));
+      setStreak(prev => prev + 1);
     }
 
     setStatus('completed');
@@ -163,6 +170,12 @@ const TodayTab = () => {
            <div className="skeleton-title"></div>
         ) : (
           <>
+            {streak > 0 && (
+              <div className={`streak-badge ${streak >= 30 ? 'gold' : ''}`}>
+                <span className={`streak-icon ${streak >= 7 ? 'flame-anim' : ''}`}>🔥</span>
+                <span className="streak-text">{streak}일 연속 기도 중!</span>
+              </div>
+            )}
             <h1 className="today-title">
               오늘은 <span className="highlight-text">{member?.name}님</span>을 위해 기도해요
             </h1>

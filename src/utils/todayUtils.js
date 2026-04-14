@@ -55,18 +55,17 @@ export const getTargetMember = (members, date = new Date()) => {
 };
 
 export const getMemberTopicsForCurrentWeek = (member) => {
-  if (!member) return [];
-  const currentWeek = getCurrentWeekObj().id;
-  const weekData = member.weeklyRequests?.find(w => w.week === currentWeek);
-  
-  // 만약 이번 주 데이터가 없으면, 가장 최근 주차의 데이터를 끌고 오거나 빈 배열
-  if (!weekData || weekData.topics.length === 0) {
-      if (member.weeklyRequests && member.weeklyRequests.length > 0) {
-          // 가장 마지막 기록을 리턴
-          const last = member.weeklyRequests[member.weeklyRequests.length - 1];
-          return last.topics || [];
-      }
-      return [];
+  if (!member || !member.weeklyRequests || member.weeklyRequests.length === 0) {
+    return ["기도제목을 등록해주세요"];
   }
-  return weekData.topics || [];
+
+  const sortedRequests = [...member.weeklyRequests].sort((a, b) => b.week.localeCompare(a.week));
+  
+  for (const req of sortedRequests) {
+    if (req.topics && req.topics.length > 0) {
+      return req.topics;
+    }
+  }
+
+  return ["기도제목을 등록해주세요"];
 };

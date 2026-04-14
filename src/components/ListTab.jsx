@@ -100,7 +100,7 @@ const ListTab = () => {
       
       if (existingMemberIndex !== -1) {
         const existingMember = updatedMembers[existingMemberIndex];
-        const existingWeeklyRequests = [...existingMember.weeklyRequests];
+        const existingWeeklyRequests = existingMember.weeklyRequests ? [...existingMember.weeklyRequests] : [];
         const currentWeekIndex = existingWeeklyRequests.findIndex(w => w.week === currentWeek.id);
         
         if (currentWeekIndex !== -1) {
@@ -195,9 +195,13 @@ const ListTab = () => {
 
   const getPreviewText = (member) => {
     if (!member.weeklyRequests || member.weeklyRequests.length === 0) return "등록된 기도제목이 없습니다";
-    const latestWeek = member.weeklyRequests[member.weeklyRequests.length - 1];
-    if (!latestWeek.topics || latestWeek.topics.length === 0) return "등록된 기도제목이 없습니다";
-    return latestWeek.topics[0];
+    const sortedRequests = [...member.weeklyRequests].sort((a, b) => b.week.localeCompare(a.week));
+    for (const req of sortedRequests) {
+      if (req.topics && req.topics.length > 0) {
+        return req.topics[0];
+      }
+    }
+    return "등록된 기도제목이 없습니다";
   };
 
   if (selectedMember) {

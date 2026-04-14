@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, CheckCircle2, Circle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, Circle, Flame, Trophy } from 'lucide-react';
+import { calculateStreak, getMaxStreak } from '../utils/dateUtils';
 import './HistoryTab.css';
 
 const HistoryTab = () => {
@@ -15,6 +16,9 @@ const HistoryTab = () => {
     };
     loadHistory();
   }, []);
+
+  const currentStreak = calculateStreak(historyData);
+  const maxStreak = getMaxStreak(historyData);
 
   // Calendar Helpers
   const year = currentDate.getFullYear();
@@ -72,6 +76,29 @@ const HistoryTab = () => {
       <header className="screen-header">
         <h1 className="screen-title">기록</h1>
       </header>
+
+      {/* Streak Summary */}
+      <section className="streak-summary-section">
+        <div className={`streak-card ${currentStreak >= 30 ? 'gold' : ''}`}>
+          <div className="streak-icon-wrap">
+            <Flame size={24} className={`streak-main-icon ${currentStreak >= 7 ? 'flame-anim' : ''}`} />
+          </div>
+          <div className="streak-info">
+            <p className="streak-label">현재 연속 기도</p>
+            <h3 className="streak-value">{currentStreak}일</h3>
+          </div>
+        </div>
+        
+        <div className="streak-card max-streak">
+          <div className="streak-icon-wrap trophy">
+            <Trophy size={20} className="streak-main-icon text-yellow" />
+          </div>
+          <div className="streak-info">
+            <p className="streak-label">최고 기록</p>
+            <h3 className="streak-value">{maxStreak}일</h3>
+          </div>
+        </div>
+      </section>
 
       {/* Monthly Summary & Calendar Header */}
       <section className="calendar-section">

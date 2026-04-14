@@ -11,6 +11,83 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Streak Summary Section */
+.streak-summary-section {
+  display: flex;
+  gap: 16px;
+}
+
+.streak-card {
+  flex: 1;
+  background: var(--surface-color);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.streak-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(239, 68, 68, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.streak-icon-wrap.trophy {
+  background: rgba(250, 204, 21, 0.1);
+}
+
+.streak-main-icon {
+  color: #f87171;
+}
+
+.streak-main-icon.text-yellow {
+  color: #fbbf24;
+}
+
+.streak-main-icon.flame-anim {
+  animation: flicker 1s infinite alternate;
+}
+
+.streak-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.streak-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.streak-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.streak-card.gold {
+  background: linear-gradient(145deg, rgba(30, 30, 45, 1) 0%, rgba(251, 191, 36, 0.05) 100%);
+  border-color: rgba(250, 204, 21, 0.3);
+  box-shadow: 0 8px 24px rgba(250, 204, 21, 0.15);
+}
+
+.streak-card.gold .streak-value {
+  background: linear-gradient(135deg, #fde047 0%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #fde047;
+}
+
 /* Calendar Section */
 .calendar-section {
   background: var(--surface-color);
