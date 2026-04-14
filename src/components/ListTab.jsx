@@ -92,19 +92,53 @@ const ListTab = () => {
 
   const handleBulkAdd = (parsedData, group) => {
     const currentWeek = getCurrentWeekObj();
-    const newMembers = parsedData.map((item, idx) => ({
-      id: Date.now().toString() + idx.toString(),
-      name: item.name,
-      group: group,
-      weeklyRequests: [
-        {
-          week: currentWeek.id,
-          label: currentWeek.label,
-          topics: item.topics || []
+    let updatedMembers = [...members];
+    
+    parsedData.forEach((item, idx) => {
+      const normalizedParsedName = item.name.replace(/\s+/g, '');
+      const existingMemberIndex = updatedMembers.findIndex(m => m.name.replace(/\s+/g, '') === normalizedParsedName);
+      
+      if (existingMemberIndex !== -1) {
+        const existingMember = updatedMembers[existingMemberIndex];
+        const existingWeeklyRequests = [...existingMember.weeklyRequests];
+        const currentWeekIndex = existingWeeklyRequests.findIndex(w => w.week === currentWeek.id);
+        
+        if (currentWeekIndex !== -1) {
+          const weekObj = existingWeeklyRequests[currentWeekIndex];
+          existingWeeklyRequests[currentWeekIndex] = {
+            ...weekObj,
+            topics: [...weekObj.topics, ...(item.topics || [])]
+          };
+        } else {
+          existingWeeklyRequests.push({
+            week: currentWeek.id,
+            label: currentWeek.label,
+            topics: item.topics || []
+          });
         }
-      ]
-    }));
-    saveToStorage([...members, ...newMembers]);
+        
+        updatedMembers[existingMemberIndex] = {
+          ...existingMember,
+          weeklyRequests: existingWeeklyRequests
+        };
+      } else {
+        const newMember = {
+          id: Date.now().toString() + idx.toString(),
+          name: item.name,
+          group: group,
+          weeklyRequests: [
+            {
+              week: currentWeek.id,
+              label: currentWeek.label,
+              topics: item.topics || []
+            }
+          ]
+        };
+        updatedMembers.push(newMember);
+      }
+    });
+
+    saveToStorage(updatedMembers);
     setShowBulkAddForm(false);
   };
 
@@ -141,9 +175,10 @@ const ListTab = () => {
     localStorage.setItem('behalf_groups', JSON.stringify(newGroups));
     
     if (deletedGroup) {
+       const fallbackGroup = newGroups.includes("미분류") ? "미분류" : newGroups[0];
        const updatedMembers = members.map(m => {
            if (m.group === deletedGroup) {
-               return { ...m, group: "미분류" };
+               return { ...m, group: fallbackGroup };
            }
            return m;
        });

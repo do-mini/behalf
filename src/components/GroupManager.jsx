@@ -22,9 +22,12 @@ const GroupManager = ({ groups, onClose, onUpdateGroups }) => {
   };
 
   const handleDelete = (targetGroup) => {
-    if (DEFAULT_GROUPS.includes(targetGroup)) return;
+    if (groups.length <= 1) {
+      alert("최소 1개의 그룹은 남아있어야 합니다.");
+      return;
+    }
     
-    if (window.confirm(`'${targetGroup}' 그룹을 삭제하시겠습니까?\n해당 그룹의 멤버들은 모두 '미분류'로 자동 이동됩니다.`)) {
+    if (window.confirm(`'${targetGroup}' 그룹을 삭제하시겠습니까?\n해당 그룹의 멤버들은 다른 그룹으로 자동 이동됩니다.`)) {
       const updated = groups.filter(g => g !== targetGroup);
       onUpdateGroups(updated, targetGroup);
     }
@@ -61,15 +64,13 @@ const GroupManager = ({ groups, onClose, onUpdateGroups }) => {
               return (
                 <li key={g} className="group-list-item">
                   <span className={`group-name ${isDefault ? 'default-group' : ''}`}>{g}</span>
-                  {!isDefault && (
-                    <button 
-                      className="group-delete-btn" 
-                      onClick={() => handleDelete(g)}
-                      aria-label="Delete Group"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  )}
+                  <button 
+                    className="group-delete-btn" 
+                    onClick={() => handleDelete(g)}
+                    aria-label="Delete Group"
+                  >
+                    <Trash2 size={16} />
+                  </button>
                   {isDefault && (
                     <span className="group-badge">기본</span>
                   )}
